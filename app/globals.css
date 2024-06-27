@@ -1,33 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .hover\:bg-Color3:hover {
+    background-color: #beadff;
   }
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Instrument Sans", sans-serif;
+  background-color: #ffffff;
+}
+
+.frame-246 {
+  @apply gap-2 flex flex-col;
+}
+.Heading-M {
+  @apply font-bold text-4xl py-1;
+}
+.Acc-btn {
+  @apply font-semibold text-base text-white w-[100%] h-12 rounded-lg py-[11px] px-7 gap-2  bg-Color1 my-6 hover:bg-Color3;
+}
+
+.Body-M {
+  @apply font-normal text-base text-bermuda;
+}
+.Body-S {
+  @apply font-normal text-xs;
+}
+.frame380-label {
+  @apply block text-Color4;
+}
+
+.frame380-label-Error {
+  @apply block text-Color5;
+}
+
+.frame380-input {
+  @apply block w-[100%] mt-1 h-12 rounded-lg border border-Color2 py-3 px-8 bg-no-repeat bg-[12px_16px] focus:border-Color1   focus:border focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] focus:outline-none caret-Color1;
+}
+.frame380-input-Error {
+  @apply block w-[100%] mt-1 h-12 rounded-lg border border-Color5 py-3 px-8 bg-no-repeat bg-[12px_16px] focus:border-Color1   focus:border focus:shadow-[0px_0px_32px_0px_rgba(99,60,255,0.25)] focus:outline-none caret-Color1;
+}
+
+.input-msg {
+  @apply absolute bottom-3 right-4 font-normal text-xs text-Color5;
+}
+.frame-259 {
+  @apply p-9;
+}
+.frame-238 {
+  @apply mt-9;
+}
+
+.form-note {
+  @apply flex justify-center;
 }

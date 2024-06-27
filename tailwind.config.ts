@@ -14,6 +14,18 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      white: "#ffffff",
+      bermuda: "#737373",
+
+      Color1: "#633CFF",
+      Color2: "#D9D9D9",
+      Color3: "#BEADFF",
+      Color4: "#888888",
+      Color5: " #FF3939",
+    },
   },
   plugins: [],
 };
