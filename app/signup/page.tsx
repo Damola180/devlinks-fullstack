@@ -1,58 +1,60 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { schemaCreate } from "@/types";
+import { useRouter } from "next/navigation";
+import { MdDangerous } from "react-icons/md";
+
+type FormFields = z.infer<typeof schemaCreate>;
 
 function page() {
   // states, refs and so on
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-
-  const [emailErrorMsg, setEmailErrorMsg] = useState("");
-  const [passwordErrorMsg, setPasswordErrorMsg] = useState("");
-  const [confirmPasswordErrorMsg, setConfirmPasswordErrorMsg] = useState("");
+  const router = useRouter();
 
   // ref for button style
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // restructure the formData state
-  const { email, password, confirmPassword } = formData;
+  // destructure use form hook
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({ resolver: zodResolver(schemaCreate) });
+  // onSubmit form function
 
-  // onChange of input fields
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    try {
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) {
+        // Check if the response is not ok (status code is not 2xx)
+        const errorData = await response.json();
+        throw new Error(errorData.error);
+      }
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.name === "email") {
-      setEmailErrorMsg("");
-    }
-    if (e.target.name === "password") {
-      setPasswordErrorMsg("");
-    }
+      const responseData = await response.json();
 
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  }
+      if (responseData) {
+        router.replace("/");
+      }
+    } catch (error: any) {
+      console.log(error);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault(); // Prevents the default form submission
-
-    if (email === "") {
-      setEmailErrorMsg("Cant be empty");
+      setError("serverError", {
+        type: "server",
+        message: error.message,
+      });
     }
-    if (password === "" || password.length < 5 || confirmPassword === "") {
-      setPasswordErrorMsg("Please check again");
-    }
-    if (password.length < 5) {
-      setConfirmPasswordErrorMsg("Password must contain at least 5 characters");
-    } else if (password !== confirmPassword) {
-      setConfirmPasswordErrorMsg("Passwords don't match");
-      setPasswordErrorMsg("Please check again");
-    }
-  }
+  };
 
   // Ref for the styling of button on click
 
@@ -69,7 +71,7 @@ function page() {
   }
   return (
     <div className=" flex justify-center items-center h-[750px] flex-col ">
-      <div className="sm:w-[85%] md:w-[50%]  ">
+      <div className="sm:w-[85%] md:w-[80%] lg:w-[50%] ">
         <div className="flex sm:justify-center items-center mb-[35px]  ml-9 sm:ml-0  ">
           <Image
             src="/solar_link-circle-bold.png"
@@ -93,15 +95,14 @@ function page() {
           </div>
 
           <form
-            onSubmit={handleSubmit}
-            action="submit"
+            onSubmit={handleSubmit(onSubmit)}
             className="frame-238"
             noValidate
           >
             <div className="mb-5 relative">
               <label
                 className={`Body-S ${
-                  emailErrorMsg ? "frame380-label-Error" : "frame380-label"
+                  errors.email ? "frame380-label-Error" : "frame380-label"
                 }`}
               >
                 Email address
@@ -109,38 +110,35 @@ function page() {
 
               <input
                 type="email"
-                name="email"
-                value={email}
-                onChange={handleChange}
                 className={`bg-[url('/ph_envelope-simple-fill.svg')] ${
-                  emailErrorMsg ? "frame380-input-Error" : "frame380-input"
+                  errors.email ? "frame380-input-Error" : "frame380-input"
                 }`}
                 placeholder="e.g. alex@email.com"
-                required
+                {...register("email")}
               />
-              <p className="input-msg">{emailErrorMsg}</p>
+              {errors.email && (
+                <p className="input-msg">{errors.email.message}</p>
+              )}
             </div>
             <div className="mb-5 relative">
               <label
-                htmlFor=""
                 className={`Body-S ${
-                  passwordErrorMsg ? "frame380-label-Error" : "frame380-label"
+                  errors.password ? "frame380-label-Error" : "frame380-label"
                 }`}
               >
                 Create password
               </label>
               <input
                 type="password"
-                value={password}
-                onChange={handleChange}
                 className={`bg-[url('/ph_lock-key-fill.svg')] ${
-                  passwordErrorMsg ? "frame380-input-Error" : "frame380-input"
+                  errors.password ? "frame380-input-Error" : "frame380-input"
                 }`}
-                name="password"
                 placeholder="At least 8 characters"
-                required
+                {...register("password")}
               />
-              <p className="input-msg">{passwordErrorMsg}</p>
+              {errors.password && (
+                <p className="input-msg">{errors.password.message}</p>
+              )}
             </div>
             <div className="mb-5 relative">
               <label htmlFor="" className="Body-S frame380-label ">
@@ -148,24 +146,35 @@ function page() {
               </label>
               <input
                 type="password"
-                value={confirmPassword}
-                onChange={handleChange}
-                className="bg-[url('/ph_lock-key-fill.svg')] frame380-input"
-                name="confirmPassword"
+                className={`bg-[url('/ph_lock-key-fill.svg')] ${
+                  errors.confirmPassword
+                    ? "frame380-input-Error"
+                    : "frame380-input"
+                }`}
                 placeholder="At least 8 characters"
-                required
+                {...register("confirmPassword")}
               />
+              {errors.confirmPassword && (
+                <p className="input-msg">{errors.confirmPassword.message}</p>
+              )}
             </div>
-            <p className="Body-S frame380-label ">{confirmPasswordErrorMsg}</p>
+
+            {errors.serverError?.message && (
+              <div className="text-Color5 mb-6  flex justify-center items-center align-center ">
+                <MdDangerous className="text-Color5 " size={24} />
+                <p> {errors.serverError.message}</p>
+              </div>
+            )}
 
             <div className="flex justify-start">
               <button
+                disabled={isSubmitting}
                 ref={buttonRef}
                 onClick={handleClick}
                 className="Acc-btn "
                 type="submit"
               >
-                Create new account
+                {isSubmitting ? "loading..." : "Create Account"}
               </button>
             </div>
 

@@ -14,7 +14,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Instrument Sans", sans-serif;
-  background-color: #ffffff;
 }
 
 .frame-246 {
@@ -24,7 +23,7 @@
   @apply font-bold text-4xl py-1;
 }
 .Acc-btn {
-  @apply font-semibold text-base text-white w-[100%] h-12 rounded-lg py-[11px] px-7 gap-2  bg-Color1 my-6 hover:bg-Color3;
+  @apply font-semibold text-base text-white w-[100%] h-12 rounded-lg py-[11px] px-7 gap-2  bg-Color1 mt-4 hover:bg-Color3;
 }
 
 .Body-M {
@@ -59,5 +58,8 @@
 }
 
 .form-note {
-  @apply flex justify-center;
+  @apply flex justify-center mt-1;
+}
+.NavBtn {
+  @apply rounded-lg border-Color1 py-3 px-7 border  text-base text-Color1  hover:bg-Color6;
 }

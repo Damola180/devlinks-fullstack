@@ -1,52 +1,52 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
+import { schema } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { MdDangerous } from "react-icons/md";
+import { signIn } from "next-auth/react";
+type FormFields = z.infer<typeof schema>;
 
 function page() {
-  // states, refs and so on
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [emailErrorMsg, setEmailErrorMsg] = useState("");
-  const [passwordErrorMsg, setPasswordErrorMsg] = useState("");
+  const router = useRouter();
 
   // ref for button style
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  // restructure the formData state
-  const { email, password } = formData;
+  // destructure use form hook
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({ resolver: zodResolver(schema) });
 
-  // onChange of input fields
+  // onSubmit form function
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.name === "email") {
-      setEmailErrorMsg("");
-    } else {
-      setPasswordErrorMsg("");
-    }
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    const { email, password } = data;
 
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const result = await signIn("credentials", {
+      redirect: false,
+      callbackUrl: "/",
+      email,
+      password,
     });
-  }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault(); // Prevents the default form submission
-
-    console.log(email);
-    console.log(password);
-
-    if (email === "") {
-      setEmailErrorMsg("Cant be empty");
+    if (result?.url) {
+      router.replace("/");
+    } else {
+      setError("serverError", {
+        message: "invalid credentials, check email or password",
+      });
     }
-    if (password === "") {
-      setPasswordErrorMsg("Cant be empty");
-    }
-  }
+
+    return result;
+  };
 
   // Ref for the styling of button on click
 
@@ -61,9 +61,10 @@ function page() {
       }, 200);
     }
   }
+
   return (
     <div className=" flex justify-center items-center h-[750px] flex-col ">
-      <div className="sm:w-[85%] md:w-[50%]  ">
+      <div className="sm:w-[85%] md:w-[80%] lg:w-[50%]  ">
         <div className="flex sm:justify-center items-center mb-[35px]  ml-9 sm:ml-0  ">
           <Image
             src="/solar_link-circle-bold.png"
@@ -89,15 +90,14 @@ function page() {
           </div>
 
           <form
-            onSubmit={handleSubmit}
-            action="submit"
+            onSubmit={handleSubmit(onSubmit)}
             className="frame-238"
             noValidate
           >
             <div className="mb-5 relative">
               <label
                 className={`Body-S ${
-                  emailErrorMsg ? "frame380-label-Error" : "frame380-label"
+                  errors.email ? "frame380-label-Error" : "frame380-label"
                 }`}
               >
                 Email address
@@ -105,41 +105,46 @@ function page() {
 
               <input
                 type="email"
-                name="email"
-                value={email}
-                onChange={handleChange}
                 className={`bg-[url('/ph_envelope-simple-fill.svg')] ${
-                  emailErrorMsg ? "frame380-input-Error" : "frame380-input"
+                  errors.email ? "frame380-input-Error" : "frame380-input"
                 }`}
                 placeholder="e.g. alex@email.com"
-                required
+                {...register("email")}
               />
-              <p className="input-msg">{emailErrorMsg}</p>
+              {errors.email && (
+                <p className="input-msg">{errors.email.message}</p>
+              )}
             </div>
             <div className="mb-5 relative">
               <label
-                htmlFor=""
                 className={`Body-S ${
-                  passwordErrorMsg ? "frame380-label-Error" : "frame380-label"
+                  errors.password ? "frame380-label-Error" : "frame380-label"
                 }`}
               >
                 Password
               </label>
               <input
                 type="password"
-                value={password}
-                onChange={handleChange}
                 className={`bg-[url('/ph_lock-key-fill.svg')] ${
-                  passwordErrorMsg ? "frame380-input-Error" : "frame380-input"
+                  errors.password ? "frame380-input-Error" : "frame380-input"
                 }`}
-                name="password"
                 placeholder="Enter your password"
-                required
+                {...register("password")}
               />
-              <p className="input-msg">{passwordErrorMsg}</p>
+              {errors.password && (
+                <p className="input-msg">{errors.password.message}</p>
+              )}
             </div>
+            {errors.serverError?.message && (
+              <div className="text-Color5 mb-6  flex justify-center items-center align-center ">
+                <MdDangerous className="text-Color5 " size={24} />
+                <p> {errors.serverError.message}</p>
+              </div>
+            )}
+
             <div className="flex justify-start">
               <button
+                disabled={isSubmitting}
                 ref={buttonRef}
                 onClick={handleClick}
                 className="Acc-btn "
