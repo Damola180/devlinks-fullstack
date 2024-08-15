@@ -52,7 +52,7 @@ export default function Profile() {
     }
     if (firstNameError == false && lastNameError == false) {
       console.log(firstNameError, lastNameError);
-      console.log("cracking");
+      console.log("crackinhg");
     }
   }
   return (
