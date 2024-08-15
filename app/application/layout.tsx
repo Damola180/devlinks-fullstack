@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
 import { auth } from "@/auth";
+import { GetReqProvider } from "@/components/ContextProvider";
 
 export const metadata: Metadata = {
   title: "login-devlinks",
@@ -16,8 +17,10 @@ export default async function RootLayout({
   console.log(session);
   return (
     <>
-      <Navbar sessionUser={session?.user?.email as string} />
-      <main>{children}</main>
+      <GetReqProvider>
+        <Navbar sessionUser={session?.user?.email as string} />
+        <main>{children}</main>
+      </GetReqProvider>
     </>
   );
 }

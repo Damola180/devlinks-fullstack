@@ -1,14 +1,18 @@
-import React from "react";
+"use client";
+import React, { useContext, createContext, useState } from "react";
+import { Suspense } from "react";
 import PreviewSection from "@/components/previewSection";
-import CustomizeLinks from "@/components/CustomizeLinks";
+import Links from "@/components/Links";
 
-function application() {
+function Application() {
   return (
-    <div className="p-6 pt-0 flex gap-6 ">
+    <div className="p flex gap-6 ">
       <PreviewSection />
-      <CustomizeLinks />
+      <Suspense fallback={"Loading..."}>
+        <Links />
+      </Suspense>
     </div>
   );
 }
 
-export default application;
+export default Application;

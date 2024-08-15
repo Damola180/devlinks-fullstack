@@ -42,13 +42,47 @@ export interface MyLinkform {
   linkUrl?: string;
 }
 export interface Link {
-  linkGenre?: string;
-  linkUrl?: string;
+  id?: number;
+  type: string;
+  url: string;
+  authorId?: string;
+  clientId: string;
+  isEmpty: boolean;
+  isValidURL: boolean;
+}
+export interface LinkInitialData {
+  id: number;
+  type: string;
+  url: string;
+  authorId: string;
+  clientId?: string;
 }
 
 export type formData = {
   email: string;
   password: string;
 };
+export interface Option {
+  value: string;
+}
+export type ImageTypeMap = {
+  [key: string]: string;
+};
+export type nameEmailTypeMap = {
+  [key: string]: string;
+};
+
+export interface NameEmailTypeMap {
+  firstName: string;
+  lastName: string;
+  email: string;
+  img: string;
+  firstNameError?: boolean;
+  lastNameError?: boolean;
+}
+export interface ReqContextType {
+  callData: boolean;
+  validateData: () => void;
+}
 
 export { schema, schemaCreate };
