@@ -14,7 +14,7 @@ export default async function POST(request: Request) {
   });
 
   if (alreadyExist) {
-    return NextResponse.json({ error: "User already exists" }, { status: 400 });
+    return Response.json({ error: "User already exists" }, { status: 400 });
   } else {
     const hashedPassword = await hash(password, 12);
 
@@ -35,7 +35,7 @@ export default async function POST(request: Request) {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(NextResponse.json({ result, loginNewUser }));
+        resolve(Response.json({ result, loginNewUser }));
       }, 3000);
     });
     // return NextResponse.json({ result, loginNewUser });

@@ -46,7 +46,7 @@ function page() {
       if (responseData) {
         router.replace("/");
       }
-      return "signup done";
+      return response;
     } catch (error: any) {
       console.log(error);
 
@@ -54,7 +54,7 @@ function page() {
         type: "server",
         message: error.message,
       });
-      return "signup done";
+      return void
     }
   };
 
