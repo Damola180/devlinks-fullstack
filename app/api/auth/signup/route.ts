@@ -26,18 +26,18 @@ export async function POST(request: Request) {
         password: hashedPassword,
       },
     });
-    const loginNewUser = await signIn("credentials", {
-      redirect: false,
-      callbackUrl: "/",
-      email,
-      password,
-    });
+    // const loginNewUser = await signIn("credentials", {
+    //   redirect: false,
+    //   callbackUrl: "/",
+    //   email,
+    //   password,
+    // });
 
     // return new Promise((resolve) => {
     //   setTimeout(() => {
     //     resolve(NextResponse.json({ result, loginNewUser }));
     //   }, 3000);
     // });
-    return NextResponse.json({ result, loginNewUser });
+    return NextResponse.json({ result });
   }
 }
