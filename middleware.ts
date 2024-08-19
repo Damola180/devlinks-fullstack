@@ -18,7 +18,7 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(absoluteURL.toString());
   }
   if (session && unisProtectedRoute) {
-    const absoluteURL = new URL("/", request.nextUrl.origin);
+    const absoluteURL = new URL("/application", request.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
 }
