@@ -29,8 +29,10 @@ function page() {
   // onSubmit form function
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    // const { email, password } = data;
+
     try {
-      const response = await fetch("/api/auth/signup", {
+      const response = await fetch("/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -46,7 +48,6 @@ function page() {
       if (responseData) {
         router.replace("/");
       }
-      return response;
     } catch (error: any) {
       console.log(error);
 
@@ -54,7 +55,6 @@ function page() {
         type: "server",
         message: error.message,
       });
-      return void
     }
   };
 
