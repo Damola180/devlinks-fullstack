@@ -4,7 +4,7 @@ export async function imageToPrisma(imageUrl: string, method: string) {
 
   try {
     const response = await fetch(
-      method === "POST" ? "/api/add-img" : "/api/patchImg",
+      method === "POST" ? "/api/postimg" : "/api/patchImg",
       {
         method: method,
         headers: { "Content-Type": "application/json" },
