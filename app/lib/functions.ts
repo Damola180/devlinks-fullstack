@@ -32,7 +32,7 @@ async function handleGet() {
 
 async function handlePATCH(id: number | undefined, type: string, url: string) {
   try {
-    const response = await fetch("/api/addpatch", {
+    const response = await fetch("/api/patchlink", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
