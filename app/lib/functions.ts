@@ -1,6 +1,6 @@
 async function handlePost(selectedOption: string, link: string) {
   try {
-    const response = await fetch("/api/add-link", {
+    const response = await fetch("/api/addlink", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ platform: selectedOption, linkurl: link }),
@@ -14,7 +14,7 @@ async function handlePost(selectedOption: string, link: string) {
 
 async function handleGet() {
   try {
-    const response = await fetch(`/api/get-link`, {
+    const response = await fetch(`/api/getlink`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -32,7 +32,7 @@ async function handleGet() {
 
 async function handlePATCH(id: number | undefined, type: string, url: string) {
   try {
-    const response = await fetch("/api/add-patch", {
+    const response = await fetch("/api/addpatch", {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

@@ -1,7 +1,7 @@
 export async function handleShareSection(userId: string) {
   try {
     const response = await fetch(
-      `/api/get-linkShare?userid=${encodeURIComponent(userId)}`,
+      `/api/getlinkShare?userid=${encodeURIComponent(userId)}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
