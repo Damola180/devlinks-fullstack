@@ -33,10 +33,11 @@ export async function POST(request: Request) {
       password,
     });
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(NextResponse.json({ result, loginNewUser }));
-      }, 3000);
-    });
+    // return new Promise((resolve) => {
+    //   setTimeout(() => {
+    //     resolve(NextResponse.json({ result, loginNewUser }));
+    //   }, 3000);
+    // });
+    return NextResponse.json({ result, loginNewUser });
   }
 }
