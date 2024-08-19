@@ -3,7 +3,7 @@ import prisma from "@/app/lib/prisma";
 import { signIn } from "@/auth";
 import { hash } from "bcryptjs";
 
-export async function POST(request: Request) {
+export default async function POST(request: Request) {
   const res = await request.json();
   const { email, password } = res;
 
@@ -26,18 +26,18 @@ export async function POST(request: Request) {
         password: hashedPassword,
       },
     });
-    // const loginNewUser = await signIn("credentials", {
-    //   redirect: false,
-    //   callbackUrl: "/",
-    //   email,
-    //   password,
-    // });
+    const loginNewUser = await signIn("credentials", {
+      redirect: false,
+      callbackUrl: "/",
+      email,
+      password,
+    });
 
-    // return new Promise((resolve) => {
-    //   setTimeout(() => {
-    //     resolve(NextResponse.json({ result, loginNewUser }));
-    //   }, 3000);
-    // });
-    return NextResponse.json({ result });
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(NextResponse.json({ result, loginNewUser }));
+      }, 3000);
+    });
+    // return NextResponse.json({ result, loginNewUser });
   }
 }
