@@ -1,6 +1,6 @@
 async function handlePost(selectedOption: string, link: string) {
   try {
-    const response = await fetch("/api/addlink", {
+    const response = await fetch("/api/postlink", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ platform: selectedOption, linkurl: link }),
