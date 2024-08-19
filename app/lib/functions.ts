@@ -52,7 +52,7 @@ async function handleDELETE(id: number) {
   console.log(`Starting DELETE request for id: ${id}`);
 
   try {
-    const response = await fetch("/api/add-delete", {
+    const response = await fetch("/api/adddelete", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: id }),
