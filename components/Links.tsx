@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
@@ -22,11 +22,6 @@ import { ColorRing } from "react-loader-spinner";
 import { useGetReqContext } from "./ContextProvider";
 
 export default function Links() {
-  const context = useGetReqContext();
-  if (!context) {
-    throw new Error("Preview");
-  }
-  const { validateData } = context;
   const router = useRouter();
   setTimeout(() => {
     setChangeSaved("");
@@ -205,7 +200,7 @@ export default function Links() {
         }
 
         ErrorInPost.current = "";
-        validateData();
+
         fetchData();
         setChangeSaved("Your changes have been successfully saved!");
       } catch (error) {
@@ -213,6 +208,7 @@ export default function Links() {
         ErrorInPost.current = "Unable to perform request try again";
       } finally {
         setSpinner(false);
+        window.location.reload();
       }
     }
   }

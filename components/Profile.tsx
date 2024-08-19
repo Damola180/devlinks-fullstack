@@ -1,31 +1,33 @@
 "use client";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { handleGet } from "@/app/lib/functions";
 import { NameEmailTypeMap, nameEmailTypeMap } from "@/types";
 import Image from "next/image";
+import { imageToPrisma } from "@/app/lib/postImage";
+import { profileUPDATE } from "@/app/lib/profileUpdate";
 
 export default function Profile() {
   // const { callData, validateData } = context;
-  const [ChangesSaved, setChangeSaved] = useState("");
+  const [loadingImg, setloadingImg] = useState(false);
 
   const [nameEmail, setNameEmail] = useState<NameEmailTypeMap>({
     firstName: "",
     lastName: "",
     email: "",
-    img: "",
+    imageurl: "",
     firstNameError: false,
     lastNameError: false,
   });
 
   async function fetchData() {
     const data = await handleGet();
-    const { firstName, lastName, email, img } = data;
+    const { firstName, lastName, email, imageurl } = data;
 
     setNameEmail({
       firstName,
       lastName,
       email,
-      img,
+      imageurl,
       firstNameError: false,
       lastNameError: false,
     });
@@ -35,7 +37,8 @@ export default function Profile() {
     fetchData();
   }, []);
   function handleProfilePost(params: NameEmailTypeMap) {
-    let { firstName, lastName, img, firstNameError, lastNameError } = params;
+    let { firstName, lastName, imageurl, firstNameError, lastNameError } =
+      params;
     if (firstName == "" || !firstName) {
       firstNameError = true;
       setNameEmail((prevState) => ({
@@ -53,8 +56,92 @@ export default function Profile() {
     if (firstNameError == false && lastNameError == false) {
       console.log(firstNameError, lastNameError);
       console.log("crackinhg");
+
+      profileUPDATE(firstName, lastName);
+      // Force refresh the page
+      window.location.reload();
     }
   }
+
+  // upload Image
+  async function uploadImage(e: React.ChangeEvent<HTMLInputElement>) {
+    setloadingImg(true);
+    let file = e.target.files?.[0];
+
+    if (file) {
+      const data = new FormData();
+      data.append("file", file);
+      data.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_NAME as string
+      );
+
+      try {
+        const res = await fetch(`/api/cloudload`, {
+          method: "POST",
+          body: data,
+        });
+
+        const imageResponse = await res.json();
+
+        if (res.ok) {
+          const imageUrl = imageResponse.uploadedImageData.secure_url;
+          if (nameEmail.imageurl !== "") {
+            // Update the existing image and delete the old one in cloudinary
+            imageToPrisma(imageUrl, "PATCH")
+              .then(() => deleteImage(nameEmail.imageurl))
+              .then(() => console.log("Old image deleted successfully"))
+              .then(() => fetchData())
+              .catch((error) =>
+                console.error(
+                  "Error updating image and deleting old one:",
+                  error
+                )
+              );
+            setTimeout(() => {
+              setloadingImg(false);
+            }, 1500);
+          } else {
+            // POST: Save the new image
+            imageToPrisma(imageUrl, "POST")
+              .then(() => console.log("Image uploaded successfully"))
+              .then(() => fetchData())
+
+              .catch((error) =>
+                console.error("Error saving new image:", error)
+              );
+            setloadingImg(false);
+          }
+        } else {
+          console.error("Error uploading image:", imageResponse);
+          setloadingImg(false);
+        }
+      } catch (error) {
+        console.error("An error occurred while uploading the image:", error);
+        setloadingImg(false);
+      }
+    } else {
+      console.log("No file selected");
+      setloadingImg(false);
+    }
+  }
+
+  //  delete Image
+
+  async function deleteImage(url: string) {
+    try {
+      const res = await fetch(`/api/clouddelete/?url=${url}`, {
+        method: "DELETE",
+      });
+      const deletedImageData = await res.json();
+      if (deletedImageData.status === 200) {
+        console.log("delete image in cloudinary is working");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <div className="py-3 px-10 w-[80%]">
       <div className="mb-4">
@@ -67,26 +154,76 @@ export default function Profile() {
       <div className="py-5 px-7 mb-7 bg-Color8">
         <div className="flex  items-center ">
           <p className="Body-M w-[45%]">Profile picture</p>
-          {nameEmail.img ? (
-            <div></div>
+
+          {loadingImg ? (
+            <p>loading... img </p>
           ) : (
-            <div className="flex items-center gap-10">
-              <div className="rounded-xl bg-Color6 w-[193px] h-[193px]">
-                <p className="pt-[67.25px] text-center">
-                  <Image
-                    src="/nonimg.png"
-                    width={32.5}
-                    height={27.5}
-                    alt="img"
-                    className="block m-auto"
-                  />
-                  <span>+ Upload image</span>
-                </p>
-              </div>
-              <p className="Body-S w-[40%]">
-                Image must be below 1024x1024px. Use PNG or JPG format.
-              </p>
-            </div>
+            <>
+              {nameEmail.imageurl ? (
+                <div className="flex items-center gap-10">
+                  <div className="relative w-[193px] h-[193px]   rounded-xl text-center flex items-center bg-Color9 opacity-95">
+                    <input
+                      type="file"
+                      className=" absolute opacity-0 z-20 top-0 left-0 w-full h-full  cursor-pointer"
+                      name="upload-image"
+                      id="upload-image"
+                      accept="image/png, image/jpeg"
+                      onChange={uploadImage}
+                    />
+                    <img
+                      src={nameEmail.imageurl}
+                      alt="img"
+                      className="block m-auto h-full w-full absolute top-0 left-0 z-0 rounded-md opacity-85 object-cover "
+                    />
+
+                    <div className=" m-auto cursor-pointer z-10">
+                      <Image
+                        src="/profileimg.png"
+                        width={32.5}
+                        height={6}
+                        alt="img"
+                        className="block m-auto "
+                      />
+                      <span className=" text-center Heading-S text-white">
+                        Change image
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="Body-S w-[40%]">
+                    Image must be below 1024x1024px. Use PNG or JPG format.
+                  </p>
+                </div>
+              ) : (
+                <div className="flex items-center gap-10">
+                  <div className="relative w-[193px] h-[193px] bg-Color6 rounded-xl text-center flex items-center">
+                    <input
+                      type="file"
+                      className="absolute opacity-0 z-40 top-0 left-0 w-full h-full  cursor-pointer"
+                      name="upload-image"
+                      id="upload-image"
+                      accept="image/png, image/jpeg"
+                      onChange={uploadImage}
+                    />
+
+                    <div className=" m-auto cursor-pointer">
+                      <Image
+                        src="/nonimg.png"
+                        width={32.5}
+                        height={6}
+                        alt="img"
+                        className="block m-auto "
+                      />
+                      <span className=" text-center ">+ Upload image</span>
+                    </div>
+                  </div>
+
+                  <p className="Body-S w-[40%]">
+                    Image must be below 1024x1024px. Use PNG or JPG format.
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -117,7 +254,7 @@ export default function Profile() {
               }
             />
             <span className="text-Color5 Body-S absolute right-[6px]">
-              {nameEmail.lastNameError ? "Can’t be empty" : ""}
+              {nameEmail.firstNameError ? "Can’t be empty" : ""}
             </span>
           </div>
           <div className="flex items-center mb-3 relative">
@@ -148,13 +285,13 @@ export default function Profile() {
               {nameEmail.lastNameError ? "Can’t be empty" : ""}
             </span>
           </div>
-          <div className="flex items-center mb-3">
-            <label className="w-[43%] Body-M" htmlFor="">
+          <div className="flex items-center mb-3 ">
+            <label className="w-[43%] Body-M " htmlFor="">
               Email*
             </label>
             <input
               className="px-4 py-3 bg-white rounded-lg border border-Color2 w-[57%]
-               font-medium text-base text-Color9  hover:cursor-pointer
+               font-medium text-base text-Color9 cursor-not-allowed
               "
               type="text"
               placeholder={nameEmail.email}
@@ -176,18 +313,6 @@ export default function Profile() {
           Save
         </button>
       </div>
-      {ChangesSaved !== "" && (
-        <p
-          className="flex items-center gap-3 px-6 w-[400px] h-[56px]
-                 text-Color8 text-base border rounded-xl bg-Color9 relative bottom-20 
-                 right-16 "
-        >
-          <span>
-            <Image src="/savedPng.png" alt="savepng" width={15} height={15} />
-          </span>
-          {ChangesSaved}
-        </p>
-      )}
     </div>
   );
 }

@@ -1,12 +1,31 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import { usePathname } from "next/navigation";
+import { handleGet } from "@/app/lib/functions";
+import { useRouter } from "next/navigation";
 
 function Navbar(props: { sessionUser: string }) {
   const pathname = usePathname();
+  const userId = useRef();
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await handleGet();
+        const { id } = data;
+        userId.current = id;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="p-6">
       <nav className="flex justify-between items-center  w-[100%] pt-4 px-6 pb-0   ">
@@ -63,7 +82,12 @@ function Navbar(props: { sessionUser: string }) {
           </Link>
         </div>
         <div className=" w-[9%] text-center">
-          <button className="NavBtn ">Preview</button>
+          <button
+            onClick={() => router.replace(`/preview/${userId.current}`)}
+            className="NavBtn "
+          >
+            Preview
+          </button>
         </div>
       </nav>
     </div>

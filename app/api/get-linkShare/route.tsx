@@ -1,17 +1,21 @@
 import { NextResponse } from "next/server";
 import prisma from "@/app/lib/prisma";
-import { auth } from "@/auth";
 
 export async function GET(request: Request) {
   try {
-    const session = await auth();
-    if (!session?.user?.email) {
-      throw new Error("User not authenticated");
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userid");
+
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, message: "User ID is required" },
+        { status: 400 }
+      );
     }
 
     const user = await prisma.user.findUnique({
       where: {
-        email: session.user.email,
+        id: userId,
       },
       select: {
         id: true,

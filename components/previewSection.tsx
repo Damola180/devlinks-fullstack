@@ -5,33 +5,24 @@ import { handleGet } from "@/app/lib/functions";
 import { ImageTypeMap, LinkInitialData, nameEmailTypeMap } from "@/types";
 
 import Image from "next/image";
-import { useGetReqContext } from "./ContextProvider";
 
 // Define a type for the image mapping
 
 export default function PreviewSection() {
-  const context = useGetReqContext();
-  if (!context) {
-    throw new Error("Preview");
-  }
-  const { callData, validateData } = context;
+  // const { callData, validateData } = context;
   const [initialData, setInitialData] = useState<LinkInitialData[]>([]);
   const [nameEmail, setnameEmail] = useState<nameEmailTypeMap>({});
   async function fetchData() {
     const data = await handleGet();
-    const { firstName, lastName, email, img } = data;
+    const { firstName, lastName, email, imageurl } = data;
 
     setInitialData(data.userLinks);
-    setnameEmail({ firstName, lastName, email, img });
+    setnameEmail({ firstName, lastName, email, imageurl });
   }
 
   useEffect(() => {
     fetchData();
   }, []);
-  if (callData) {
-    fetchData();
-    validateData();
-  }
 
   // Define a type for placeholders
   const placeholders: LinkInitialData[] = new Array(4).fill({
@@ -54,13 +45,12 @@ export default function PreviewSection() {
   return (
     <div className="bg-preview-bg bg-[center_top_10px] bg-no-repeat bg-auto w-[37%]">
       <div className="flex justify-start flex-col items-center text-center w-[50%] mt-20 mx-auto">
-        <div className="h-[96px] w-[96px] bg-Color10 rounded-full">
-          {nameEmail.img && (
-            <Image
-              src={nameEmail.img}
-              width={100}
-              height={100}
-              alt="profile-img"
+        <div className="h-[110px] w-[110px] bg-Color10 rounded-full overflow-hidden">
+          {nameEmail.imageurl && (
+            <img
+              className="h-[110px] w-[110px] object-cover object-center"
+              src={nameEmail.imageurl}
+              alt=""
             />
           )}
         </div>

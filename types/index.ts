@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { array, z } from "zod";
 import { MutableRefObject } from "react";
 const schema = z.object({
   email: z
@@ -71,12 +71,19 @@ export type ImageTypeMap = {
 export type nameEmailTypeMap = {
   [key: string]: string;
 };
-
-export interface NameEmailTypeMap {
+export type ShareTypeMap = {
   firstName: string;
   lastName: string;
   email: string;
-  img: string;
+  imageurl: string;
+  userLinks: [];
+};
+export interface NameEmailTypeMap {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  imageurl: string;
   firstNameError?: boolean;
   lastNameError?: boolean;
 }
