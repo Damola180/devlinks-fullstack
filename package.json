@@ -7,13 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init && prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.4.1",
     "@hookform/resolvers": "^3.6.0",
     "@prisma/client": "^5.16.1",
     "@types/uuid": "^10.0.0",
+    "@vercel/postgres": "^0.9.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.4.0",
     "install": "^0.13.0",
