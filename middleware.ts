@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 const protectedRoutes = ["/application"];
 const unprotectedRoutes = ["/login", "/signup"];
 
-export default async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const session = await auth();
 
   const isProtectedRoute = protectedRoutes.some((prefix) =>
@@ -13,6 +13,8 @@ export default async function middleware(request: NextRequest) {
   const unisProtectedRoute = unprotectedRoutes.some((prefix) =>
     request.nextUrl.pathname.startsWith(prefix)
   );
+
+  console.log(isProtectedRoute);
   if (!session && isProtectedRoute) {
     const absoluteURL = new URL("/login", request.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
@@ -22,3 +24,7 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(absoluteURL.toString());
   }
 }
+
+export const config = {
+  matcher: ["application", "/login", "/signup"],
+};
