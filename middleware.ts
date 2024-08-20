@@ -24,7 +24,3 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(absoluteURL.toString());
   }
 }
-
-export const config = {
-  matcher: ["application", "/login", "/signup"],
-};
