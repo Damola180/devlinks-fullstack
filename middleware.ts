@@ -15,11 +15,11 @@ export default async function middleware(request: NextRequest) {
   );
 
   console.log(isProtectedRoute);
-  if (!session && isProtectedRoute) {
+  if (!session?.user?.email && isProtectedRoute) {
     const absoluteURL = new URL("/login", request.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
-  if (session && unisProtectedRoute) {
+  if (session?.user?.email && unisProtectedRoute) {
     const absoluteURL = new URL("/application", request.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
