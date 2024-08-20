@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 const protectedRoutes = ["/application"];
 const unprotectedRoutes = ["/login", "/signup"];
 
-export async function middleware(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const session = await auth();
 
   const isProtectedRoute = protectedRoutes.some((prefix) =>
