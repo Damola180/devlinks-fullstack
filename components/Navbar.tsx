@@ -6,7 +6,7 @@ import React, { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { handleGet } from "@/app/lib/functions";
 import { useRouter } from "next/navigation";
-
+import { signOut } from "next-auth/react";
 function Navbar(props: { sessionUser: string }) {
   const pathname = usePathname();
   const userId = useRef();
@@ -81,6 +81,7 @@ function Navbar(props: { sessionUser: string }) {
             </p>
           </Link>
         </div>
+        <button onClick={() => signOut()}>Sign Out</button>
         <div className=" w-[9%] text-center">
           <button
             onClick={() => router.replace(`/preview/${userId.current}`)}
