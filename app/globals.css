@@ -61,5 +61,5 @@
   @apply flex justify-center mt-1;
 }
 .NavBtn {
-  @apply rounded-lg border-Color1 py-3 px-7 border  text-base text-Color1  hover:bg-Color6;
+  @apply rounded-lg border-Color1 border  text-base text-Color1  hover:bg-Color6;
 }

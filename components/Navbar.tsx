@@ -27,9 +27,9 @@ function Navbar(props: { sessionUser: string }) {
   }, []);
 
   return (
-    <div className="p-6">
-      <nav className="flex justify-between items-center  w-[100%] pt-4 px-6 pb-0   ">
-        <div className="flex w-[14.8%] items-center gap-2">
+    <div className="md:p-6 sm:py-3 sm:px-2 px-3  ">
+      <nav className="flex justify-between md:justify-between sm:justify-normal sm:gap-4 items-center  w-[100%] pt-4 md:px-6 pb-0   ">
+        <div className="flex md:w-[20.8%] w-[20%]  items-center md:gap-2 ">
           <Image
             src="/solar_link-circle-bold.png"
             width={26.67}
@@ -42,20 +42,21 @@ function Navbar(props: { sessionUser: string }) {
             height={21}
             alt="devlinks-img"
             quality={100}
+            className="hidden md:block sm:block"
           />
         </div>
-        <div className=" flex justify-around w-[24.04%]">
+        <div className=" flex md:justify-center md:gap-3 sm:gap-0 gap-2 sm:w-[45%] md:w-[38%] w-[34%]  ">
           <Link
             href="/application"
             className={`flex items-center gap-2 hover:bg-vector-2 bg-no-repeat 
-              bg-[center_left_15px] py-2 px-4 rounded-lg ${
+              md:bg-[center_left_15px] sm:bg-[center_left_15px] bg-[center] py-4  sm:px-4 md:px-4 px-7 rounded-lg ${
                 pathname === "/application"
                   ? "bg-vector-2 bg-Color6"
                   : "bg-unactive-link"
               }`}
           >
             <p
-              className={`hover:text-Color1 ml-6   ${
+              className={`hover:text-Color1  hidden md:block sm:block ml-6   ${
                 pathname === "/application" ? "text-Color1" : ""
               }`}
             >
@@ -66,14 +67,15 @@ function Navbar(props: { sessionUser: string }) {
           <Link
             href="/application/profile"
             className={`flex items-center gap-2 hover:bg-vector-profile bg-no-repeat 
-              bg-[center_left_5px] py-2 px-1 rounded-lg ${
-                pathname === "/application/profile"
-                  ? "bg-vector-profile bg-Color6"
-                  : "bg-vector-3"
-              }`}
+               sm:bg-[center_left_15px]  md:bg-[center_left_15px] bg-[center]  py-4 sm:py-2 md:py-2 px-7 md:px-3 sm:px-3  rounded-lg 
+                 ${
+                   pathname === "/application/profile"
+                     ? "bg-vector-profile bg-Color6"
+                     : "bg-vector-3"
+                 }`}
           >
             <p
-              className={`hover:text-Color1 ml-6   ${
+              className={`hover:text-Color1 ml-6 hidden md:block sm:block  ${
                 pathname === "/application/profile" ? "text-Color1" : ""
               }`}
             >
@@ -81,13 +83,18 @@ function Navbar(props: { sessionUser: string }) {
             </p>
           </Link>
         </div>
-        <button onClick={() => signOut()}>Sign Out</button>
-        <div className=" w-[9%] text-center">
+        <button
+          className="md:w-[10%]  sm:w-[9%] w-[19%] sm:text-sm text-sm md:text-base sm:ml-2"
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </button>
+        <div className=" md:w-[12%] sm:w-[10%] w-[19%] text-center sm:ml-[-10px]  ">
           <button
             onClick={() => router.replace(`/preview/${userId.current}`)}
-            className="NavBtn "
+            className="NavBtn sm:py-3 py-4 px-7  bg-preview-eye bg-no-repeat bg-[center] sm:bg-none "
           >
-            Preview
+            <span className="hidden sm:block ">Preview</span>
           </button>
         </div>
       </nav>

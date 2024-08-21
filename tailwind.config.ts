@@ -15,6 +15,7 @@ const config: Config = {
         "vector-3": "url('/Vector (3).png')",
         "vector-profile": "url('/profile hover.png')",
         "vector-2": "url('/Vector (2).png')",
+        "preview-eye": "url('/previewbtneye.png')",
         "unactive-link": "url('/unactive link.png')",
         "preview-bg": "url('/Union.png')",
         "github-bg": "url('/github img.png')",
@@ -22,6 +23,11 @@ const config: Config = {
       },
       boxShadow: {
         custom: "0px 0px 32px 0px #633CFF40",
+
+        "custom-shadow": "0px 0px 32px 0px #0000001A",
+      },
+      screens: {
+        ro: "860px", // Custom md breakpoint
       },
     },
     colors: {

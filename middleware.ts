@@ -18,7 +18,6 @@ export default async function middleware(request: NextRequest) {
     (prefix) => request.nextUrl.pathname === prefix
   );
 
-  console.log(isProtectedRoute);
   if (!session?.user?.email && (isProtectedRoute || isHomeRoute)) {
     const absoluteURL = new URL("/login", request.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());

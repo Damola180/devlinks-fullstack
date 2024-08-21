@@ -43,7 +43,7 @@ export default function PreviewSection() {
   };
 
   return (
-    <div className="bg-preview-bg bg-[center_top_10px] bg-no-repeat bg-auto w-[37%]">
+    <div className="bg-preview-bg bg-[center_top_10px]  bg-no-repeat bg-auto w-[37%] hidden sm:hidden ro:block  ">
       <div className="flex justify-start flex-col items-center text-center w-[50%] mt-20 mx-auto">
         <div className="h-[110px] w-[110px] bg-Color10 rounded-full overflow-hidden">
           {nameEmail.imageurl && (

@@ -6,7 +6,7 @@ import Links from "@/components/Links";
 
 function Application() {
   return (
-    <div className="p flex gap-6 ">
+    <div className="p flex  ">
       <PreviewSection />
       <Suspense fallback={"Loading..."}>
         <Links />

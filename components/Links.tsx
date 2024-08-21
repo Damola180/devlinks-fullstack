@@ -244,9 +244,14 @@ export default function Links() {
   }
 
   return (
-    <div className={` h-[834px]  px-10 w-[63%]`}>
+    <div
+      className={` h-[834px]  sm:px-8 sm:py-0 p-4
+      ro:w-[63%] w-[100%] `}
+    >
       <div className="mb-7">
-        <h1 className="Heading-M">Customize your links</h1>
+        <h1 className="font-bold sm:text-4xl py-1 text-3xl">
+          Customize your links
+        </h1>
         <p className="Body-M">
           Add/edit/remove links below and then share all your profiles with the
           world!
@@ -254,7 +259,7 @@ export default function Links() {
       </div>
       <button
         onClick={() => createLinks()}
-        className="w-[100%] border rounded-lg border-Color1 py-2 px-6 font-medium text-base text-Color1 mb-1 hover:bg-Color6 hover:cursor-pointer"
+        className="w-[100%] border rounded-lg border-Color1 py-2 px-6 font-medium text-base text-Color1 sm:mb-1 mb-4 hover:bg-Color6 hover:cursor-pointer"
       >
         + Add new link
       </button>
@@ -396,7 +401,7 @@ export default function Links() {
                   <button
                     onClick={() => handleDataPost(linksContainers)}
                     className={`rounded-lg  text-base
-           text-Color2 font-medium py-3 px-6  bg-Color1`}
+           text-Color2 font-medium py-3 px-6  sm:w-auto w-[100%]  bg-Color1`}
                   >
                     Save
                   </button>
@@ -430,10 +435,10 @@ export default function Links() {
                     className="mb-7 mx-auto"
                   />
                   <div>
-                    <h3 className="font-semibold text-3xl mb-4">
+                    <h3 className="font-semibold sm:text-3xl text-2xl mb-4">
                       Let’s get you started
                     </h3>
-                    <p className="Body-M w-[65%] mx-auto">
+                    <p className="Body-M sm:w-[65%] mx-auto">
                       Use the “Add new link” button to get started. Once you
                       have more than one link, you can reorder and edit them.
                       We’re here to help you share your profiles with everyone!
@@ -441,7 +446,7 @@ export default function Links() {
                   </div>
                 </div>
                 <div className="text-right border-t-[1px] border-Color2 py-6">
-                  <button className="rounded-lg text-base text-Color2 font-medium py-3 px-6 bg-Color7">
+                  <button className="rounded-lg text-base text-Color2 font-medium py-3 px-6 bg-Color7 sm:w-auto w-[100%]">
                     Save
                   </button>
                 </div>

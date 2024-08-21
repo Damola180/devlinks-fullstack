@@ -5,7 +5,7 @@ import React from "react";
 
 export default function profile() {
   return (
-    <div className="p flex gap-12 ">
+    <div className="p flex gap-5 ">
       <PreviewSection />
 
       <Profile />

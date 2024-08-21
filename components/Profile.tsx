@@ -143,28 +143,30 @@ export default function Profile() {
   }
 
   return (
-    <div className="py-3 px-10 w-[80%]">
+    <div className="sm:py-3 py-4 sm:px-10 px-6 ro:w-[63%] w-[100%]">
       <div className="mb-4">
-        <h1 className="font-bold text-3xl py-1 mb-2">Profile Details</h1>
+        <h1 className="font-bold sm:text-3xl text-2xl py-1 mb-2">
+          Profile Details
+        </h1>
         <p className="Body-M">
           Add your details to create a personal touch to your profile.
         </p>
       </div>
 
       <div className="py-5 px-7 mb-7 bg-Color8">
-        <div className="flex  items-center ">
-          <p className="Body-M w-[45%]">Profile picture</p>
+        <div className="sm:flex   items-center ">
+          <p className="Body-M w-[45%] mb-4 sm:mb-0">Profile picture</p>
 
           {loadingImg ? (
             <p>loading... img </p>
           ) : (
             <>
               {nameEmail.imageurl ? (
-                <div className="flex items-center gap-10">
-                  <div className="relative w-[193px] h-[193px]   rounded-xl text-center flex items-center bg-Color9 opacity-95">
+                <div className="sm:flex items-center gap-10">
+                  <div className="relative w-[193px] h-[193px]   rounded-xl text-center flex items-center  bg-Color9 opacity-95">
                     <input
                       type="file"
-                      className=" absolute opacity-0 z-20 top-0 left-0 w-full h-full  cursor-pointer"
+                      className=" absolute opacity-0 z-20 top-0 left-0 w-full h-full  cursor-pointer mb-4"
                       name="upload-image"
                       id="upload-image"
                       accept="image/png, image/jpeg"
@@ -190,12 +192,12 @@ export default function Profile() {
                     </div>
                   </div>
 
-                  <p className="Body-S w-[40%]">
+                  <p className="Body-S sm:w-[40%] mt-6 sm:mt-0">
                     Image must be below 1024x1024px. Use PNG or JPG format.
                   </p>
                 </div>
               ) : (
-                <div className="flex items-center gap-10">
+                <div className="sm:flex items-center gap-10">
                   <div className="relative w-[193px] h-[193px] bg-Color6 rounded-xl text-center flex items-center">
                     <input
                       type="file"
@@ -218,7 +220,7 @@ export default function Profile() {
                     </div>
                   </div>
 
-                  <p className="Body-S w-[40%]">
+                  <p className="Body-S sm:w-[40%] mt-6 sm:mt-0">
                     Image must be below 1024x1024px. Use PNG or JPG format.
                   </p>
                 </div>
@@ -229,12 +231,12 @@ export default function Profile() {
       </div>
       <div className="px-7 bg-Color8 ">
         <form action="">
-          <div className="flex items-center mb-3 relative">
-            <label className="w-[43%] Body-M" htmlFor="">
+          <div className="sm:flex items-center mb-3 relative">
+            <label className="w-[43%] Body-M block" htmlFor="">
               First name*
             </label>
             <input
-              className={`px-4 py-3 bg-white rounded-lg border border-Color2 w-[57%]
+              className={`px-4 py-3 bg-white rounded-lg border border-Color2 sm:w-[57%] w-[100%]
                font-medium text-base text-Color9  hover:cursor-pointer
                hover:border-Color1  hover:shadow-custom focus:shadow-custom focus:border caret-Color1 focus:border-Color1     focus:outline-none 
                ${
@@ -257,12 +259,12 @@ export default function Profile() {
               {nameEmail.firstNameError ? "Can’t be empty" : ""}
             </span>
           </div>
-          <div className="flex items-center mb-3 relative">
-            <label className="w-[43%] Body-M" htmlFor="">
+          <div className="sm:flex items-center mb-3 relative">
+            <label className="w-[43%] Body-M block" htmlFor="">
               Last name*
             </label>
             <input
-              className={`px-4 py-3 bg-white rounded-lg border border-Color2 w-[57%]
+              className={`px-4 py-3 bg-white rounded-lg border border-Color2 sm:w-[57%] w-[100%]
                font-medium text-base text-Color9  hover:cursor-pointer
                hover:border-Color1  hover:shadow-custom focus:shadow-custom focus:border caret-Color1 focus:border-Color1     focus:outline-none 
                ${
@@ -285,12 +287,12 @@ export default function Profile() {
               {nameEmail.lastNameError ? "Can’t be empty" : ""}
             </span>
           </div>
-          <div className="flex items-center mb-3 ">
-            <label className="w-[43%] Body-M " htmlFor="">
+          <div className="sm:flex items-center mb-3 ">
+            <label className="w-[43%] Body-M block " htmlFor="">
               Email*
             </label>
             <input
-              className="px-4 py-3 bg-white rounded-lg border border-Color2 w-[57%]
+              className="px-4 py-3 bg-white rounded-lg border border-Color2 sm:w-[57%] w-[100%]
                font-medium text-base text-Color9 cursor-not-allowed
               "
               type="text"
@@ -307,7 +309,7 @@ export default function Profile() {
       >
         <button
           onClick={() => handleProfilePost(nameEmail)}
-          className={`rounded-lg  text-base
+          className={`rounded-lg  text-base sm:w-auto w-[100%]
            text-Color2 font-medium py-3 px-6  bg-Color1`}
         >
           Save

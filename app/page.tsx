@@ -5,12 +5,6 @@ import Router, { useRouter } from "next/navigation";
 export default async function Home() {
   const session = await auth();
 
-  // if (session?.user) {
-  //   redirect("/application");
-  // } else {
-  //   redirect("/login");
-  // }
-
   return (
     <>
       Link sharing App

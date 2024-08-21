@@ -92,4 +92,11 @@ export interface ReqContextType {
   validateData: () => void;
 }
 
+export interface LinksToShow {
+  id: number;
+  type: string;
+  url: string;
+  authorId: string;
+}
+
 export { schema, schemaCreate };
